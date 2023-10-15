@@ -6,9 +6,9 @@ const User = g.model('User', {
   email: g.string().unique(),
   avatarUrl: g.url(),
   description: g.string().length({ min: 2, max: 1000 }).optional(),
-  githubUrl: g.url().optional(),
-  linkedinUrl: g.url().optional(), 
-  projects: g.relation(() => Project).list().optional(),
+  githubUrl: g.url().optional(),  //optional可选
+  linkedinUrl: g.url().optional(),
+  projects: g.relation(() => Project).list().optional(),    //
 }).auth((rules) => {
   rules.public().read()
 })
@@ -16,11 +16,11 @@ const User = g.model('User', {
 // @ts-ignore
 const Project = g.model('Project', {
   title: g.string().length({ min: 3 }),
-  description: g.string(), 
+  description: g.string(),
   image: g.url(),
-  liveSiteUrl: g.url(), 
-  githubUrl: g.url(), 
-  category: g.string().search(),
+  liveSiteUrl: g.url(),
+  githubUrl: g.url(),
+  category: g.string().search(),   //allow us to search through category
   createdBy: g.relation(() => User),
 }).auth((rules) => {
   rules.public().read()
