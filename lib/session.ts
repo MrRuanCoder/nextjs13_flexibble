@@ -8,7 +8,7 @@ import { JWT } from "next-auth/jwt";
 import { createUser, getUser } from "./actions";
 import { SessionInterface, UserProfile } from "@/common.types";
 
-export const authOptions: NextAuthOptions = {
+export const authOptions: NextAuthOptions = {   //指定变量为NextAuthOptions 的对象
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -39,9 +39,12 @@ export const authOptions: NextAuthOptions = {
   },
   callbacks: {
     async session({ session }) {
-      const email = session?.user?.email as string;
+      const email = session?.user?.email as string;   //可选链操作符 ?. 来安全地访问属性，如果属性不存在则返回 undefined
 
-      try { 
+      try {
+        //111  ? 表示 user 属性是可选的，即它不一定要存在在对象中。如果存在，它的类型应该是 UserProfile
+        //as { user?: UserProfile } 表示将 await getUser(email) 返回的值断言为具有一个名为 user 的可选属性的对象，
+        // 且这个属性的类型应该符合 UserProfile 的类型。
         const data = await getUser(email) as { user?: UserProfile }
 
         const newSession = {
