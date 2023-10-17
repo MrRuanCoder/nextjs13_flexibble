@@ -11,8 +11,8 @@ import { SessionInterface, UserProfile } from "@/common.types";
 export const authOptions: NextAuthOptions = {   //指定变量为NextAuthOptions 的对象
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      clientId: process.env.GOOGLE_CLIENT_ID!,      //需要google cloud相关服务
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,    //非空断言操作符,！表示一定有值
     }),
   ],
   jwt: {
@@ -25,7 +25,7 @@ export const authOptions: NextAuthOptions = {   //指定变量为NextAuthOptions
         },
         secret
       );
-      
+
       return encodedToken;
     },
     decode: async ({ secret, token }) => {
@@ -61,10 +61,15 @@ export const authOptions: NextAuthOptions = {   //指定变量为NextAuthOptions
         return session;
       }
     },
+    //{ user } 是参数解构的语法。它表示从传递给函数的参数对象中提取 user 属性，并将其赋值给一个名为 user 的局部变量。
+    //: 表示类型注解，指定了 user 参数的类型。
     async signIn({ user }: {
       user: AdapterUser | User
     }) {
       try {
+        //如果user对象存在且具有email属性，就会获取它，否则返回undefined。
+        // 接着，as string部分将结果强制转换为字符串类型，以确保getUser函数接受的参数是字符串。
+        //as { user?: UserProfile }类型断言,告诉TypeScript将getUser函数的返回值视为具有user属性的对象,该属性的类型应该符合UserProfile类型。
         const userExists = await getUser(user?.email as string) as { user?: UserProfile }
         
         if (!userExists.user) {
@@ -73,7 +78,7 @@ export const authOptions: NextAuthOptions = {   //指定变量为NextAuthOptions
 
         return true;
       } catch (error: any) {
-        console.log("Error checking if user exists: ", error.message);
+        console.log("Error checking if user exists: ", error.message);    //异常报错检测
         return false;
       }
     },
@@ -81,7 +86,7 @@ export const authOptions: NextAuthOptions = {   //指定变量为NextAuthOptions
 };
 
 export async function getCurrentUser() {
-  const session = await getServerSession(authOptions) as SessionInterface;
+  const session = await getServerSession(authOptions) as SessionInterface;    //extends了session
 
   return session;
 }
