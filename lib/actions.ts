@@ -40,6 +40,7 @@ const makeGraphQLRequest = async (query: string, variables = {}) => {
     //client.request(query, variables): 这是一个 GraphQL 客户端（可能是一个库或工具）的请求方法。
     // 它接受两个参数，一个是 GraphQL 查询字符串 (query)，另一个是查询的变量 (variables)。它会将查询发送到 GraphQL 服务器，并等待服务器的响应。
     //
+    //
     return await client.request(query, variables);
   } catch (err) {
     throw err;
