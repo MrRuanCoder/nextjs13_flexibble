@@ -84,7 +84,7 @@ export const authOptions: NextAuthOptions = {   //指定变量为NextAuthOptions
     },
   },
 };
-
+//
 export async function getCurrentUser() {
   const session = await getServerSession(authOptions) as SessionInterface;    //extends了session
 
