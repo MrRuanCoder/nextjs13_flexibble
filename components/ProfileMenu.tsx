@@ -15,7 +15,7 @@ const ProfileMenu = ({ session }: { session: SessionInterface }) => {
         <div className="flexCenter z-10 flex-col relative">
             <Menu as="div">
                 <Menu.Button className="flexCenter" onMouseEnter={() => setOpenModal(true)} >
-                    {session?.user?.image && (
+                    {session?.user?.image && (      //在 session 对象包含 user 和 image 属性并且这些属性存在有效值的情况下，渲染用户的图像
                         <Image
                             src={session.user.image}
                             width={40}
